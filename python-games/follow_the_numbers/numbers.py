@@ -1,4 +1,6 @@
+import pgzrun
 from random import randint
+from pgzero.builtins import Actor, animate, keyboard
 # Follow the Numbers
 
 
@@ -7,7 +9,7 @@ HEIGHT = 500
 
 dots = []
 lines = []
-
+game_over = False
 next_dot = 0
 
 for dot in range(0,10):
@@ -16,6 +18,8 @@ for dot in range(0,10):
     dots.append(actor)
 
 def draw():
+    global next_dot
+
     screen.fill('black')
     number = 1
     for dot in dots:
@@ -25,9 +29,16 @@ def draw():
     for line in lines:
         screen.draw.line(line[0], line[1], (100,0,0))
 
+    if game_over:
+        screen.draw.text("Game Over!", topleft=(10,50), color='white')
+     
+    
+
+    
 def on_mouse_down(pos):
-    global next_dot
+    global next_dot 
     global lines
+    global game_over
 
     if dots[next_dot].collidepoint(pos):
         if next_dot:
@@ -36,5 +47,12 @@ def on_mouse_down(pos):
 
     else:
         lines = []
+        game_over = True
         next_dot = 0
-        
+
+def time_up():
+    global game_over
+    game_over = True
+
+
+pgzrun.go()
